@@ -5,7 +5,8 @@ let weatherApiKey = "ba8d45d4558f27276ce537d29316860b";
 
 let input = document.querySelector("input");
 let current = document.querySelector("#current");
-let historyCount = document.querySelector(".historycount");
+let searchForm = document.querySelector("#search-form")
+let historyCount = document.querySelector("#history");
 
 let button = document.querySelector("#searchBtn");
     button.addEventListener("click", coords);
@@ -65,10 +66,11 @@ function rendercurrentweather(city, weather, timezone) {
   todaycontainer.append(card);
 }
 
-function checkweather(currentloc) {
-  let { lat, long } = currentloc;
-  let city = currentloc.name;
-  let apiurl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
+function checkweather(location) {
+  let lat = location;
+  let long = location;
+  let city = location.name;
+  let apiurl = `${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`;
 
   fetch(apiurl)
     .then(function (res) {
@@ -82,9 +84,8 @@ function checkweather(currentloc) {
     });
 }
 
-function coords(event) {
-  event.preventDefault();
-  let search = input.value
+function coords(search) {
+  search.preventDefault();
   let apiurl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
   
     fetch(apiurl)
@@ -96,6 +97,7 @@ function coords(event) {
       if (!data[0]) {
         alert("location not found");
       } else {
+
         appendHistory(search);
         checkweather(data[0]);
       }
@@ -146,3 +148,26 @@ function rendercard() {
   forcastContainer.append(col);
   console.log();
 }
+
+function searchformsubmit(e) {
+
+  if (!searchInput.value) {
+    return;
+  }
+  e.preventDefault();
+  var search = searchInput.value.trim();
+  fetchCoords(search);
+  searchInput.value = '';
+}
+function SearchHistoryClick(e) {
+
+  if (!e.target.matches('.btn-history')) {
+    return;
+  }
+  var btn = e.target;
+  var search = btn.getAttribute('data-search');
+  fetchCoords(search);
+  }
+  searchForm.addEventListener("submit", searchformsubmit) 
+  
+  historyCount.addEventListener("click", SearchHistoryClick)
