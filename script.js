@@ -29,6 +29,7 @@ for (let i = 0; i < array.length; i++) {
     input.value = this.innerHTML;
   });
   rem.addEventListener("click", getCurrent);
+
 }
 
 function renderItems(city, data) {
@@ -82,10 +83,36 @@ function checkweather(location) {
     .catch(function (err) {
       console.error(err);
     });
+    console.log()
 }
+function appendHistory(search) {
+  
+  if (searchHistory.indexOf(search) !== -1) {
+    return;
+  }
+  searchHistory.push(search);
+  localStorage.setItem('search-history', JSON.stringify(searchHistory));
+  renderSearchHistory();
+}
+
+function renderSearchHistory() {
+  searchHistoryContainer.innerHTML = '';
+  for (var i = searchHistory.length - 1; i >= 0; i--) {
+    var btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-controls', 'today forecast');
+    btn.classList.add('history-btn', 'btn-history');
+    btn.setAttribute('data-search', searchHistory[i]);
+    btn.textContent = searchHistory[i];
+    searchHistory.append(btn);
+  }
+}
+
+
 
 function coords(search) {
   search.preventDefault();
+
   let apiurl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
   
     fetch(apiurl)
