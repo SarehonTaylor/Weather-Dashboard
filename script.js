@@ -2,9 +2,12 @@
 let seachhistroy = [];
 let weatherApiRootUrl = "https://api.openweathermap.org";
 let weatherApiKey = "ba8d45d4558f27276ce537d29316860b";
-
-let input = document.querySelector("input");
-let current = document.querySelector("#current");
+//DOM element references
+var searchForm = document.querySelector('#search-form');
+let searchInput = document.querySelector("#search-input");
+let todayContainer = document.querySelector('today')
+let forcastContainer =document.querySelector('#forcast');
+current = document.querySelector("#current");
 let searchForm = document.querySelector("#search-form")
 let historyCount = document.querySelector("#history");
 
@@ -120,13 +123,13 @@ function coords(search) {
       return res.json();
     })
 
-    .then(function (data) {
-      if (!data[0]) {
+    .then(function (search) {
+      if (!search[0]) {
         alert("location not found");
       } else {
 
         appendHistory(search);
-        checkweather(data[0]);
+        checkweather(search[0]);
       }
     })
 
