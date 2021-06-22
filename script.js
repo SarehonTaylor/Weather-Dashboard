@@ -7,9 +7,10 @@ var searchForm = document.querySelector('#search-form');
 let searchInput = document.querySelector("#search-input");
 let todayContainer = document.querySelector('today')
 let forcastContainer =document.querySelector('#forcast');
-current = document.querySelector("#current");
-let searchForm = document.querySelector("#search-form")
-let historyCount = document.querySelector("#history");
+var forecastContainer = document.querySelector('#forecast');
+// add timezine plugin day.js
+dayjs.extend(window.dayjs_plugin_utc);
+dayjs.extend(window.dayjs_plugin_timezone);
 
 let button = document.querySelector("#searchBtn");
     button.addEventListener("click", coords);
